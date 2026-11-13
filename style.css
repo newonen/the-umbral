@@ -65,6 +65,14 @@ h2 { font-family: var(--display); font-style: italic; font-weight: 700; font-siz
 .gallery img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; }
 .gallery figure:hover img { transform: scale(1.04); }
 @media (max-width: 860px) { .gallery { grid-template-columns: repeat(3, 1fr); } }
+/* séries: carta + nome + nº de heróis (gerado por bot/tools/build_site.py) */
+.gallery.series { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+.gallery.series figure { aspect-ratio: auto; display: grid; }
+.gallery.series img { aspect-ratio: 2 / 3; height: auto; }
+.gallery.series figcaption { padding: 10px 12px 12px; display: grid; gap: 2px; }
+.gallery.series figcaption b { font-size: 14px; line-height: 1.25; }
+.gallery.series figcaption span { color: var(--muted); font-size: 12.5px; }
+@media (max-width: 560px) { .gallery.series { grid-template-columns: repeat(2, 1fr); } }
 
 .free { background: linear-gradient(135deg, var(--panel-2), var(--panel)); border: 1px solid var(--line); border-radius: 16px; padding: 28px; display: grid; gap: 10px; }
 .free h2 { margin: 0; }

@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>The Umbral</title>
-<meta name="description" content="The Umbral is a free anime card game for Discord. Summon, build teams, climb the Hunt, raid with friends. No purchases, ever.">
+<meta name="description" content="The Umbral is a free anime card gacha RPG for Discord. Summon heroes, build teams, raid with friends, climb event Towers and fight in the Ranked Arena. No purchases, ever.">
 <meta property="og:title" content="The Umbral">
 <meta property="og:description" content="A free anime card game for Discord, hosted by Umbra. No purchases, ever.">
 <meta property="og:image" content="img/umbra.webp">
@@ -15,12 +15,13 @@
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<!-- EDITAR ANTES DE PUBLICAR: o link do servidor de suporte (SUPPORT) aparece aqui e nas páginas legais. Ver docs/README.md -->
+<!-- A grelha das séries e os números (séries, heróis, áreas da Hunt) são gerados pelo bot: bot/tools/build_site.py -->
 <header class="bar">
   <div class="wrap">
     <a class="brand" href="./"><img src="img/umbra.webp" alt="">The Umbral</a>
     <nav aria-label="Site">
       <a href="#game">The game</a>
+      <a href="#series">Series</a>
       <a href="#free">Free</a>
       <a href="terms.html">Terms</a>
       <a href="privacy.html">Privacy</a>
@@ -34,11 +35,11 @@
       <div class="inner">
         <div class="eyebrow">The Umbral</div>
         <h1>The Rift is open.</h1>
-        <p class="lede">An anime card game that lives in your Discord server. Summon heroes from eleven series, build a team of three and climb into the dark with Umbra, who will judge every pull you make.</p>
+        <p class="lede">An anime card game that lives in your Discord server. Summon <!--N:heroes-->144<!--/N--> heroes from <!--N:series-->14<!--/N--> anime worlds, build a team of three and climb into the dark with Umbra, who will judge every pull you make.</p>
         <p class="quote">"Free to play. Free to lose. I take no payment, only amusement."</p>
         <div class="ctas">
-          <a class="btn primary" href="https://discord.com/oauth2/authorize?client_id=1566791307459035156&amp;permissions=388160&amp;scope=bot%20applications.commands">Add Umbra to your server</a>
-          <a class="btn ghost" href="https://discord.gg/SUPPORT">Join the community</a>
+          <a class="btn primary" href="https://discord.com/oauth2/authorize?client_id=1566791307459035156">Add Umbra to your server</a>
+          <a class="btn ghost" href="https://discord.gg/sQDGqMUbPa">Join the community</a>
         </div>
       </div>
     </div>
@@ -50,26 +51,39 @@
       <p class="sub">Everything happens with slash commands or short <code>,</code> commands, right in the chat.</p>
       <div class="grid">
         <div class="card"><h3>Summon</h3><p>A free daily pull, Common Packs every level, and Basic, Premium and Legendary Packs paid with in-game Gold. Cards go from R to LR, and LRs ascend to D5.</p></div>
-        <div class="card"><h3>Build a team</h3><p>Seven roles: Tanks, Supports, Debuffers and four kinds of damage. Every character has its own ultimate, passive and power.</p></div>
-        <div class="card"><h3>Climb the Hunt</h3><p>Eleven locations, eighteen floors each: duo bosses, an LR in the middle and another at the top. Every first clear pays Gold.</p></div>
-        <div class="card"><h3>Raid together</h3><p>Spawn a raid boss, invite friends or open it to everyone, and split the rewards with the group.</p></div>
-        <div class="card"><h3>Clans</h3><p>Create a clan, recruit with your clan ad, level it up and share the treasury.</p></div>
-        <div class="card"><h3>Trade and the Codex</h3><p>Trade cards with other players, sell on the market, and collect every character and skin in the Codex.</p></div>
+        <div class="card"><h3>Build a team</h3><p>Seven roles: Tanks, Supports, Debuffers and four kinds of damage. Every character has its own skills, mechanic and a build made for the Arena or for PvE.</p></div>
+        <div class="card"><h3>Climb the Hunt</h3><p><!--N:areas-->14<!--/N--> locations, eighteen floors each: duo bosses, an LR in the middle and another at the top. Every first clear pays Gold.</p></div>
+        <div class="card"><h3>Raid together</h3><p>Spawn a raid boss with shared HP, invite friends or open it to everyone, and split the rewards with the group.</p></div>
+        <div class="card"><h3>Ranked Arena</h3><p>Teams of five, a ban on each side and stats evened out so skill counts. Climb six divisions every season for Arena Medals and a season-exclusive skin.</p></div>
+        <div class="card"><h3>Event Towers</h3><p>Seasonal dungeons you climb floor by floor, with a boss every five floors, their own shop and rare skins.</p></div>
+        <div class="card"><h3>Clans</h3><p>Create a clan with players from every server, recruit with your clan ad, level it up and share the treasury.</p></div>
+        <div class="card"><h3>Market and Codex</h3><p>Trade cards, sell on the Global Market and collect every character and skin in the Codex. One account follows you to every server.</p></div>
+        <div class="card"><h3>Community Giveaway</h3><p>The small tax on market sales fills a community pot. When it is full, a giveaway opens and the winners split it. All of it goes back to the players.</p></div>
       </div>
     </div>
   </section>
 
-  <section aria-label="Characters">
+  <section id="series" aria-label="Series">
     <div class="wrap">
-      <h2>Eleven series, one Rift</h2>
-      <p class="sub">Jujutsu Kaisen, Tensura, The Eminence in Shadow, Naruto, Dragon Ball, Bleach, One Piece, Demon Slayer, Hunter x Hunter, Fullmetal Alchemist: Brotherhood and Black Clover.</p>
-      <div class="gallery">
-        <figure><img src="img/gojo.webp" alt="Satoru Gojo card art" loading="lazy"></figure>
-        <figure><img src="img/luffy.webp" alt="Monkey D. Luffy card art" loading="lazy"></figure>
-        <figure><img src="img/tanjiro.webp" alt="Tanjiro Kamado card art" loading="lazy"></figure>
-        <figure><img src="img/killua.webp" alt="Killua Zoldyck card art" loading="lazy"></figure>
-        <figure><img src="img/rimuru.webp" alt="Rimuru Tempest card art" loading="lazy"></figure>
-        <figure><img src="img/edward.webp" alt="Edward Elric card art" loading="lazy"></figure>
+      <h2><!--N:series-->14<!--/N--> worlds, one Rift</h2>
+      <p class="sub">New worlds keep tearing through the Rift. Every series brings its own heroes, an LR to chase and a Hunt location to clear.</p>
+      <div class="gallery series">
+        <!-- SERIES:START -->
+        <figure><img src="img/series/jjk.webp" alt="Satoru Gojo card art" loading="lazy" width="360" height="540"><figcaption><b>Jujutsu Kaisen</b><span>13 heroes</span></figcaption></figure>
+        <figure><img src="img/series/tensura.webp" alt="Rimuru Tempest card art" loading="lazy" width="360" height="540"><figcaption><b>Tensura</b><span>10 heroes</span></figcaption></figure>
+        <figure><img src="img/series/eminence.webp" alt="Cid Kagenou / Shadow card art" loading="lazy" width="360" height="540"><figcaption><b>The Eminence in Shadow</b><span>10 heroes</span></figcaption></figure>
+        <figure><img src="img/series/naruto.webp" alt="Naruto Uzumaki card art" loading="lazy" width="360" height="540"><figcaption><b>Naruto</b><span>10 heroes</span></figcaption></figure>
+        <figure><img src="img/series/dragon_ball.webp" alt="Son Goku card art" loading="lazy" width="360" height="540"><figcaption><b>Dragon Ball</b><span>10 heroes</span></figcaption></figure>
+        <figure><img src="img/series/bleach.webp" alt="Yhwach card art" loading="lazy" width="360" height="540"><figcaption><b>Bleach</b><span>10 heroes</span></figcaption></figure>
+        <figure><img src="img/series/one_piece.webp" alt="Monkey D. Luffy card art" loading="lazy" width="360" height="540"><figcaption><b>One Piece</b><span>10 heroes</span></figcaption></figure>
+        <figure><img src="img/series/demon_slayer.webp" alt="Muzan Kibutsuji card art" loading="lazy" width="360" height="540"><figcaption><b>Demon Slayer</b><span>10 heroes</span></figcaption></figure>
+        <figure><img src="img/series/hunter_x_hunter.webp" alt="Gon Freecss card art" loading="lazy" width="360" height="540"><figcaption><b>Hunter x Hunter</b><span>10 heroes</span></figcaption></figure>
+        <figure><img src="img/series/fma.webp" alt="Edward Elric card art" loading="lazy" width="360" height="540"><figcaption><b>Fullmetal Alchemist: Brotherhood</b><span>10 heroes</span></figcaption></figure>
+        <figure><img src="img/series/black_clover.webp" alt="Asta card art" loading="lazy" width="360" height="540"><figcaption><b>Black Clover</b><span>10 heroes</span></figcaption></figure>
+        <figure><img src="img/series/solo_leveling.webp" alt="Sung Jinwoo card art" loading="lazy" width="360" height="540"><figcaption><b>Solo Leveling</b><span>10 heroes</span></figcaption></figure>
+        <figure><img src="img/series/fire_force.webp" alt="Shinra Kusakabe card art" loading="lazy" width="360" height="540"><figcaption><b>Fire Force</b><span>11 heroes</span></figcaption></figure>
+        <figure><img src="img/series/overlord.webp" alt="Ainz Ooal Gown card art" loading="lazy" width="360" height="540"><figcaption><b>Overlord</b><span>10 heroes</span></figcaption></figure>
+        <!-- SERIES:END -->
       </div>
     </div>
   </section>
@@ -91,7 +105,7 @@
     <nav aria-label="Legal">
       <a href="terms.html">Terms of Service</a>
       <a href="privacy.html">Privacy Policy</a>
-      <a href="https://discord.gg/SUPPORT">Support server</a>
+      <a href="https://discord.gg/sQDGqMUbPa">Support server</a>
     </nav>
     <p>The Umbral is a free fan project. It is not affiliated with, endorsed by or sponsored by Discord or by the creators, publishers or studios of the series it features. All characters belong to their respective owners.</p>
   </div>
