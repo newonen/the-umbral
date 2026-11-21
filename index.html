@@ -62,6 +62,25 @@
     </div>
   </div>
 
+  <section id="pull" aria-label="Try a pull">
+    <div class="wrap pull">
+      <div class="pull-copy">
+        <h2>Feel the pull</h2>
+        <p class="sub">Every day the Rift hands you a free card. Tap the card to see what a pull feels like.</p>
+        <button type="button" class="btn primary" id="pull-btn">Pull a card</button>
+        <p id="pull-result" aria-live="polite"></p>
+        <p class="note">This is only a demo. It picks one of the series cards at random and does not use the game's real odds.</p>
+      </div>
+      <div class="pull-stage" id="pull-stage" aria-hidden="true">
+        <div class="pglow"></div>
+        <div class="pcard" id="pcard">
+          <div class="pface pback"><img src="img/umbra.webp" alt=""><span>The Umbral</span></div>
+          <div class="pface pfront"><img id="pimg" alt=""></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section id="game">
     <div class="wrap">
       <h2>What you do in the Rift</h2>
@@ -162,16 +181,15 @@
 </footer>
 <script>
 (function () {
-  if (!('IntersectionObserver' in window) || matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    document.documentElement.classList.remove('js');
-    return;
-  }
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!('IntersectionObserver' in window) || reduce) { document.documentElement.classList.remove('js'); return; }
   var io = new IntersectionObserver(function (entries) {
     entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
   }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
-  document.querySelectorAll('.card, .shots figure, .gallery.series figure, .free, .final .wrap').forEach(function (el, i) {
+  document.querySelectorAll('.card, .shots figure, .gallery.series figure, .free, .final .wrap, .pull .pull-copy, .pull .pull-stage').forEach(function (el) {
+    var idx = Array.prototype.indexOf.call(el.parentNode.children, el);
     el.classList.add('reveal');
-    el.style.setProperty('--d', (i % 6) * 50 + 'ms');
+    el.style.setProperty('--d', (idx % 6) * 55 + 'ms');
     io.observe(el);
   });
 })();
@@ -216,7 +234,7 @@
     document.getElementById('sd-title').textContent = s.name;
     document.getElementById('sd-count').textContent = s.heroes.length + ' heroes';
     var body = document.getElementById('sd-body'); body.textContent = '';
-    s.heroes.forEach(function (h) { body.appendChild(hero(h)); });
+    s.heroes.forEach(function (h, i) { var c = hero(h); c.style.setProperty('--i', i); body.appendChild(c); });
     body.scrollTop = 0;
     dlg.showModal();
   }
@@ -233,6 +251,108 @@
   dlg.querySelector('.sd-close').addEventListener('click', function () { dlg.close(); });
   dlg.addEventListener('click', function (e) { if (e.target === dlg) dlg.close(); });
   dlg.addEventListener('close', function () { if (last) last.focus(); });
+})();
+</script>
+<script>
+(function () {
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* scroll progress line */
+  var bar = document.querySelector('.bar'), ticking = false;
+  function progress() {
+    var h = document.documentElement.scrollHeight - innerHeight;
+    bar.style.setProperty('--p', h > 0 ? Math.min(1, Math.max(0, scrollY / h)).toFixed(4) : 0);
+    ticking = false;
+  }
+  addEventListener('scroll', function () { if (!ticking) { ticking = true; requestAnimationFrame(progress); } }, { passive: true });
+  progress();
+
+  /* demo pull */
+  var stage = document.getElementById('pull-stage'), card = document.getElementById('pcard'),
+      img = document.getElementById('pimg'), btn = document.getElementById('pull-btn'),
+      out = document.getElementById('pull-result'), busy = false, last = -1;
+  function pool() {
+    return Array.prototype.map.call(document.querySelectorAll('.gallery.series figure'), function (f) {
+      var im = f.querySelector('img'), b = f.querySelector('figcaption b');
+      return im && b ? { src: im.getAttribute('src'), hero: (im.getAttribute('alt') || '').replace(/ card art$/, ''), series: b.textContent } : null;
+    }).filter(Boolean);
+  }
+  function burst() {
+    if (reduce) return;
+    for (var i = 0; i < 16; i++) {
+      var s = document.createElement('i'), a = Math.random() * Math.PI * 2, d = 90 + Math.random() * 90;
+      s.style.setProperty('--x', Math.cos(a) * d + 'px'); s.style.setProperty('--y', Math.sin(a) * d + 'px');
+      s.style.animationDelay = Math.random() * 90 + 'ms';
+      stage.appendChild(s);
+      (function (n) { setTimeout(function () { n.remove(); }, 1100); })(s);
+    }
+  }
+  function reveal(p) {
+    img.onload = img.onerror = function () {
+      card.classList.add('flipped'); stage.classList.remove('charging'); stage.classList.add('done');
+      out.textContent = p.hero + ', from ' + p.series + '.';
+      btn.textContent = 'Pull again';
+      setTimeout(function () { busy = false; }, reduce ? 0 : 850);
+      setTimeout(burst, reduce ? 0 : 380);
+    };
+    img.alt = p.hero + ' card art';
+    img.src = p.src;
+  }
+  function pull() {
+    if (busy) return;
+    var list = pool(); if (!list.length) return;
+    busy = true;
+    var n; do { n = Math.floor(Math.random() * list.length); } while (list.length > 1 && n === last);
+    last = n;
+    var wasUp = card.classList.contains('flipped');
+    out.textContent = '';
+    stage.classList.remove('done');
+    if (reduce) { card.classList.remove('flipped'); reveal(list[n]); return; }
+    stage.classList.add('charging');
+    if (wasUp) card.classList.remove('flipped');
+    setTimeout(function () { reveal(list[n]); }, wasUp ? 450 : 320);
+  }
+  btn.addEventListener('click', pull);
+  stage.addEventListener('click', pull);
+
+  /* the light that follows the pointer on the series cards */
+  if (!reduce && matchMedia('(hover: hover) and (pointer: fine)').matches) {
+    document.querySelectorAll('.gallery.series figure').forEach(function (f) {
+      f.addEventListener('pointermove', function (e) {
+        var r = f.getBoundingClientRect(), x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
+        f.classList.add('tilting');
+        f.style.setProperty('--gx', (x * 100).toFixed(1) + '%'); f.style.setProperty('--gy', (y * 100).toFixed(1) + '%');
+        f.style.transform = 'perspective(700px) rotateX(' + ((0.5 - y) * 7).toFixed(2) + 'deg) rotateY(' + ((x - 0.5) * 8).toFixed(2) + 'deg) translateY(-4px)';
+      });
+      f.addEventListener('pointerleave', function () { f.classList.remove('tilting'); f.style.transform = ''; });
+    });
+  }
+
+  /* numbers count up once, when they come into view */
+  var nums = document.querySelectorAll('.stats dd');
+  if (!reduce && 'IntersectionObserver' in window) {
+    var cio = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        cio.unobserve(e.target);
+        var el = e.target, end = el.textContent, to = parseInt(end, 10);
+        if (isNaN(to)) return;
+        var t0 = performance.now(), dur = 1100;
+        (function step(now) {
+          var k = Math.min(1, (now - t0) / dur), v = 1 - Math.pow(1 - k, 3);
+          el.textContent = k < 1 ? Math.round(to * v) : end;
+          if (k < 1) requestAnimationFrame(step);
+        })(t0);
+      });
+    }, { threshold: 0.6 });
+    nums.forEach(function (n) { cio.observe(n); });
+  }
+
+  /* pause the slow hero drift when the hero is off screen */
+  var hero = document.querySelector('.hero');
+  if (hero && 'IntersectionObserver' in window) {
+    new IntersectionObserver(function (es) { hero.classList.toggle('paused', !es[0].isIntersecting); }).observe(hero);
+  }
 })();
 </script>
 </body>
